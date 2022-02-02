@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Scripts/jquery-1.6.4.min.js"></script>
+    <script src="Scripts/jquery.signalR-2.4.2.min.js"></script>
+    <script type="text/javascript">
+
+        var member = prompt("Please, Enter Name : ")
+        $(function () {
+            var connection = $.connection("/echo");
+            connection.start().done(function () {
+                console.log("Connected!!");
+                $("#chatWindow").val(member + " Connected!!!\n");
+                $("#sendButton").click(function () {
+                    connection.send(member+" : "+$("#messageTextBox").val());
+                    $("#messageTextBox").val("");
+
+                })
+            })
+            connection.received(function (data) {
+                $("#chatWindow").val($("#chatWindow").val() + data + "\n");
+            })
+        })
+    </script>
+</head>
+<body>
+    <h2>Chat Application (Persistence)</h2>
+    <textarea id="chatWindow" style="width:400px; height:200px;"></textarea>
+    <div>
+        <lebel>Message</lebel>
+        <input tytpe="text" id="messageTextBox" />
+        <button id="sendButton">Send</button>
+    </div>
+</body>
+</html>
